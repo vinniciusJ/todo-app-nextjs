@@ -1,8 +1,15 @@
 import React from 'react'
+import moment from 'moment'
 
 import { Flex, Box, Checkbox, Heading, Tag, Divider, Text } from '@chakra-ui/react'
 
 const Todo = ({ title, priority, createdAt, description, isDone }) => {
+    const priorities = { 
+        'low': { color: 'green', label: 'Low Priority' },
+        'medium': { color: 'yellow', label: 'Medium Priority' },
+        'high': { color: 'red', label: 'High Priority' }
+    }
+
     return (
         <Box 
             w="xs" 
@@ -26,16 +33,17 @@ const Todo = ({ title, priority, createdAt, description, isDone }) => {
                     <Tag 
                         borderRadius="full" 
                         variant="outline" 
-                        colorScheme="red"
+                        w="8rem"
+                        colorScheme={priorities[priority].color}
                     >
-                        { priority }
+                        { priorities[priority].label }
                     </Tag>
                     <Tag
                         borderRadius="full" 
                         variant="outline" 
                         colorScheme="gray"
                     >
-                        { createdAt }
+                        { moment(createdAt).format('DD/MM/YYYY') }
                     </Tag>
                 </Flex>
             </Box>

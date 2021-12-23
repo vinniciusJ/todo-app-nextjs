@@ -1,13 +1,14 @@
 import React, { forwardRef, useImperativeHandle } from 'react'
 import { useForm } from 'react-hook-form'
+import { api } from '../services/api'
 
-import { Modal, ModalOverlay, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, ModalContent, useDisclosure, Button, Flex, FormControl, Select, Textarea, FormLabel, Box } from '@chakra-ui/react'
+import { Modal, ModalOverlay, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, ModalContent, useDisclosure, Button, Flex, Input, Select, Textarea, FormLabel, Box } from '@chakra-ui/react'
 
 const TodoPopup = (props, ref) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const { handleSubmit, register } = useForm()
 
-    const createTodoTask = data => console.log(data)
+    const createTodoTask = async data => await api.post('/todo', { data })
 
     const handleSubmitForm = event => {
         event.preventDefault()

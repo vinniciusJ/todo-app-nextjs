@@ -1,10 +1,11 @@
-import React, { useRef } from 'react'
+import React, { useRef, useEffect } from 'react'
 import Todo from '../components/Todo'
 
 import { Flex, Box, Heading,Button } from '@chakra-ui/react'
 import TodoPopup from '../components/TodoPopup'
+import { api } from '../services/api'
 
-const Home = () => {
+const Home = ({ tasksToDo, doneTasks }) => {
 	const todoPopupRef = useRef(null)
 
 	const openTodoPopup = () => todoPopupRef.current.openTodoPopup()
@@ -31,31 +32,10 @@ const Home = () => {
 				</Flex>
 
 				<Flex as="section" flexWrap="wrap" gap={8}>
-					<Todo 
-						title="Lorem ipsum solor sit amnet"
-						priority="High Priority"
-						createdAt="22/12/2021"
-						description="Lorem ipsum dolor sit, amet consectetur adipisicing elit. Hic eum dolores iusto error fugiat? Quaerat corrupti odit illo, id aliquam at quam, architecto impedit quos perspiciatis facere, temporibus fugiat doloribus."
-					/>
-					<Todo 
-						isDone
-						title="Lorem ipsum solor sit amnet"
-						priority="High Priority"
-						createdAt="22/12/2021"
-						description="Lorem ipsum dolor sit, amet consectetur adipisicing elit. Hic eum dolores iusto error fugiat? Quaerat corrupti odit illo, id aliquam at quam, architecto impedit quos perspiciatis facere, temporibus fugiat doloribus."
-					/>
-					<Todo 
-						title="Lorem ipsum solor sit amnet"
-						priority="High Priority"
-						createdAt="22/12/2021"
-						description="Lorem ipsum dolor sit, amet consectetur adipisicing elit. Hic eum dolores iusto error fugiat? Quaerat corrupti odit illo, id aliquam at quam, architecto impedit quos perspiciatis facere, temporibus fugiat doloribus."
-					/>
-					<Todo 
-						title="Lorem ipsum solor sit amnet"
-						priority="High Priority"
-						createdAt="22/12/2021"
-						description="Lorem ipsum dolor sit, amet consectetur adipisicing elit. Hic eum dolores iusto error fugiat? Quaerat corrupti odit illo, id aliquam at quam, architecto impedit quos perspiciatis facere, temporibus fugiat doloribus."
-					/>
+
+					{ tasksToDo.map(task => (
+						<Todo {...task}/>
+					)) }
 					
 				</Flex>
 			</Box>
@@ -66,6 +46,19 @@ const Home = () => {
 			</Box>
 		</Flex>
 	)
+}
+
+export const getStaticProps = async context => {
+	const data = await (await api.get('/todo')).data
+
+	const tasksToDo = data.filter(datum => !datum.isDone)
+	const doneTasks = data.filter(datum => datum.isDone)
+
+	return {
+		props: {
+			tasksToDo, doneTasks
+		}
+	}
 }
 
 export default Home
