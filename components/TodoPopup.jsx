@@ -4,16 +4,24 @@ import { api } from '../services/api'
 
 import { Modal, ModalOverlay, ModalHeader, ModalCloseButton, ModalBody, ModalFooter, ModalContent, useDisclosure, Button, Flex, Input, Select, Textarea, FormLabel, Box } from '@chakra-ui/react'
 
-const TodoPopup = (props, ref) => {
+const TodoPopup = ({ _id, title, description, priority }, ref) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const { handleSubmit, register } = useForm()
 
     const createTodoTask = async data => await api.post('/todo', { data })
+    const editTodoTask = async data => await api.put('/todo', { data: { ...data, _id } })
 
     const handleSubmitForm = event => {
         event.preventDefault()
 
-        handleSubmit(createTodoTask)(event)
+        if(title || description || priority){
+            handleSubmit(editTodoTask)(event)
+        }
+        else{
+            handleSubmit(createTodoTask)(event)
+        }
+        
+        
         onClose()
     }
  
@@ -32,12 +40,12 @@ const TodoPopup = (props, ref) => {
 
                         <Box>
                             <FormLabel htmlFor='title' fontWeight="bold">Todo title</FormLabel>
-                            <Input {...register('title', { required: true })}/>
+                            <Input {...register('title', { required: true })} defaultValue={title}/>
                         </Box>
 
                         <Box>
                             <FormLabel htmlFor='priority' fontWeight="bold">Priority</FormLabel>
-                            <Select {...register('priority')}>
+                            <Select {...register('priority')} defaultValue={priority}>
                                 <option value="low">Low</option>
                                 <option value="medium">Medium</option>
                                 <option value="high">High</option>
@@ -46,7 +54,7 @@ const TodoPopup = (props, ref) => {
 
                         <Box>
                             <FormLabel htmlFor='description' fontWeight="bold">Description</FormLabel>
-                            <Textarea {...register('description')} resize="none" h={36}/>
+                            <Textarea {...register('description')} resize="none" h={36} defaultValue={description}/>
                         </Box>
 
                     </Flex>
@@ -56,7 +64,7 @@ const TodoPopup = (props, ref) => {
                     <Button colorScheme='blue' mr={3} onClick={onClose}>
                     Close
                     </Button>
-                    <Button onClick={handleSubmitForm} variant='ghost'>Create</Button>
+                    <Button onClick={handleSubmitForm} variant='ghost'>{ (title || priority || description) ? 'Update' : 'Create' }</Button>
                 </ModalFooter>
             </ModalContent>
         </Modal>
