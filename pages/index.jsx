@@ -10,12 +10,12 @@ import { connectToDatabase } from "../lib/mongodb"
 
 const Home = ({ tasks }) => {
 	const fetcher = async url => (await api.get(url)).data
-	
+
 	const todoPopupRef = useRef(null)
 	const { data } = useSWR('/todo', fetcher, { fallbackData: tasks, refreshInterval: 1000 })
 	
-	const tasksToDo = useMemo(() => data.filter(task => !task.isDone), [ data ])
-	const doneTasks = useMemo(() => data.filter(task => task.isDone), [ data ])
+	const tasksToDo = useMemo(() => data.filter(datum => !datum.isDone), [ data ])
+	const doneTasks = useMemo(() => data.filter(datum => datum.isDone), [ data ])
 
 	const openTodoPopup = () => todoPopupRef.current.openTodoPopup()
 
@@ -67,10 +67,10 @@ const Home = ({ tasks }) => {
 export const getStaticProps = async context => {
 	const { db } = await connectToDatabase()
 
-	const data = await db.collection("todo-tasks").find({}).toArray()
+	const data = JSON.parse(JSON.stringify(await db.collection("todo-tasks").find({}).toArray()	))
 
 	return {
-		props: { tasks: JSON.stringify(data) }
+		props: { tasks: data }
 	}
 }
 
