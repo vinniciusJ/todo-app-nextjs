@@ -6,7 +6,7 @@ import TodoPopup from '../components/TodoPopup'
 
 import { Flex, Box, Heading,Button } from '@chakra-ui/react'
 import { api } from '../services/api'
-import { connectToDatabase } from "../../lib/mongodb"
+import { connectToDatabase } from "../lib/mongodb"
 
 const Home = ({ tasks }) => {
 	const fetcher = async url => (await api.get(url)).data
