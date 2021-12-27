@@ -15,7 +15,7 @@ export default async (req, res) => {
 			return res.status(200).json({ message: 'Todo task created!' })
 		}
 
-		return res.status(200).json({ message: 'Todo task has been created!' })
+		res.status(200).json({ message: 'Todo task has been created!' })
 	}
 
 	if(req.method == 'PUT'){
@@ -23,17 +23,13 @@ export default async (req, res) => {
 
 		const updatedRecord = { $set: { title, priority, description }}
 
-		console.log(args.isDone)
-
 		if(args){
 			updatedRecord.$set.isDone = args.isDone
 		}
 
-		console.log(updatedRecord.$set)
-
 		db.collection('todo-tasks').updateOne({ _id: new ObjectId(_id) }, updatedRecord)
 
-		return res.status(200).json({ message: 'Todo task has been updated!' })
+		res.status(200).json({ message: 'Todo task has been updated!' })
 	}
 
 	if(req.method == 'DELETE'){
@@ -41,12 +37,12 @@ export default async (req, res) => {
 
 		db.collection('todo-tasks').deleteOne({ _id: new ObjectId(_id) })
 
-		return res.status(200).json({ message: 'Todo task has been deleted!' })
+		res.status(200).json({ message: 'Todo task has been deleted!' })
 	}
 
 	if(req.method == 'GET'){
 		const data = await db.collection("todo-tasks").find({}).toArray()
 
-		return res.status(200).json(data)
+		res.status(200).json(data)
 	}
 }
