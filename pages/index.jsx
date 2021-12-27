@@ -1,7 +1,8 @@
 import React, { useRef, useMemo } from 'react'
+import useSWR from 'swr'
+
 import Todo from '../components/Todo'
 import TodoPopup from '../components/TodoPopup'
-import useSWR from 'swr'
 
 import { Flex, Box, Heading,Button } from '@chakra-ui/react'
 import { api } from '../services/api'
@@ -24,7 +25,6 @@ const Home = ({ tasks }) => {
 			gap={8} 
 			px={20}
 			py={12}
-			
 			h="100vh"
 			bgColor="gray.50"
 		>
