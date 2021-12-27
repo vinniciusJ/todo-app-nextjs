@@ -69,10 +69,10 @@ export const getStaticProps = async context => {
 
 	const data = await db.collection("todo-tasks").find({}).toArray()
 
+	const tasks = data.map(datum => ({ ...datum, _id: datum._id.str }))
+
 	return {
-		props: {
-			tasks: data
-		}
+		props: { tasks }
 	}
 }
 
