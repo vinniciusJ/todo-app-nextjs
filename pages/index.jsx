@@ -6,6 +6,7 @@ import TodoPopup from '../components/TodoPopup'
 
 import { Flex, Box, Heading,Button } from '@chakra-ui/react'
 import { api } from '../services/api'
+import { connectToDatabase } from "../../lib/mongodb"
 
 const Home = ({ tasks }) => {
 	const fetcher = async url => (await api.get(url)).data
@@ -64,7 +65,9 @@ const Home = ({ tasks }) => {
 }
 
 export const getStaticProps = async context => {
-	const data = await (await api.get('/todo')).data
+	const { db } = await connectToDatabase()
+
+	const data = await db.collection("todo-tasks").find({}).toArray()
 
 	return {
 		props: {
