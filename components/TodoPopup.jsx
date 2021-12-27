@@ -20,8 +20,7 @@ const TodoPopup = ({ _id, title, description, priority }, ref) => {
         else{
             handleSubmit(createTodoTask)(event)
         }
-        
-        
+         
         onClose()
     }
  

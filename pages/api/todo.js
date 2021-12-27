@@ -21,14 +21,15 @@ export default async (req, res) => {
 	if(req.method == 'PUT'){
 		const { _id, title, priority, description, ...args } = req.body.data
 
-		const updatedRecord = { $set: {}}
+		const updatedRecord = { $set: { title, priority, description }}
 
-		if(args.isDone){
-			updatedRecord.$set = { isDone: args.isDone }
+		console.log(args.isDone)
+
+		if(args){
+			updatedRecord.$set.isDone = args.isDone
 		}
-		else{
-			updatedRecord.$set = { title, priority, description }
-		}
+
+		console.log(updatedRecord.$set)
 
 		db.collection('todo-tasks').updateOne({ _id: new ObjectId(_id) }, updatedRecord)
 

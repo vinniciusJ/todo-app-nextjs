@@ -19,9 +19,7 @@ const Todo = ({ _id, title, priority, createdAt, description, isDone }) => {
     const openPopupToEdit = () => todoPopupRef.current.openTodoPopup()
 
     const checkTodoTask = async () => {
-        await api.put('/todo', { data: { _id, isDone: !isDoneStatus } })
-       
-        console.log('oi')
+        await api.put('/todo', { data: { _id, title, priority, description, isDone: !isDoneStatus } })
 
         setIsDoneStatus(!isDoneStatus)
     }   
@@ -44,7 +42,7 @@ const Todo = ({ _id, title, priority, createdAt, description, isDone }) => {
             >
                 <Box as="header">
                     <Flex justify="space-between" alignItems="center">
-                        <Checkbox pb={4} checked={isDone} onChange={checkTodoTask} isChecked={isDoneStatus}>
+                        <Checkbox pb={4}  onChange={checkTodoTask} isChecked={isDoneStatus}>
                             <Heading as="h2" size="md" textDecor={isDone ? 'line-through' : 'none'}>{ title }</Heading>
                         </Checkbox>
 

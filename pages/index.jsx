@@ -12,8 +12,8 @@ const Home = ({ tasks }) => {
 	const todoPopupRef = useRef(null)
 	const { data } = useSWR('/todo', fetcher, { fallbackData: tasks, refreshInterval: 1000 })
 	
-	const tasksToDo = useMemo(() => data.filter(task => !task.isDone))
-	const doneTasks = useMemo(() => data.filter(task => task.isDone))
+	const tasksToDo = useMemo(() => data.filter(task => !task.isDone), [ data ])
+	const doneTasks = useMemo(() => data.filter(task => task.isDone), [ data ])
 
 	const openTodoPopup = () => todoPopupRef.current.openTodoPopup()
 
@@ -69,8 +69,7 @@ export const getStaticProps = async context => {
 	return {
 		props: {
 			tasks: data
-		},
-		revalidate: 1
+		}
 	}
 }
 
